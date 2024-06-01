@@ -2,12 +2,22 @@
 #define STDLIB_H
 
 #include <sys/syscall.h>
+#include <unistd.h>
 #include <stddef.h>
 
-void exit(int code)
-{
-    syscall(SYS_exit, code);
-}
+asm("exit:\n\
+			 mov $0x3c,%rax\n\
+			 syscall\n\
+			 ret\n\
+			 ");
+
+
+__attribute__((__cdecl__,noreturn)) void exit(int status);
+
+/* void exit(int code) */
+/* { */
+/*     syscall(SYS_exit, code); */
+/* } */
 
 int atoi(const char *_str)
 {
@@ -33,8 +43,8 @@ int atoi(const char *_str)
 
 void *malloc(int size)
 {
-    int current = syscall(SYS_brk, 0);
-    int next = syscall(SYS_brk, current + size);
+    int current = brk(0);
+    int next = brk(current + size);
     //printf("current=%x,next=%x\n",current,next);
     return current == next ? NULL : current;
 }
