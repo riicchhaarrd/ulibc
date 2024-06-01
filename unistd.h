@@ -1,5 +1,8 @@
 #ifndef UNISTD_H
 #define UNISTD_H
+#include <sys/types.h>
+#include <stddef.h>
+#include <stdlib.h>
 
 /* int read(int fd, char *buf, int len) */
 /* { */
