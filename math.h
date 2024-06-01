@@ -24,13 +24,19 @@ float absf(float f)
 	return f;
 }
 
+float modf(float x, int *integer)
+{
+	*integer = (int)x;
+	return x - (int)x;
+}
+
 float logf(float x)
 {
 	if(x <= 0.f)
 		return -1.f / 0.f;
 
 	const float eps = 1e-6;
-	const unsigned int N = 64;
+	const unsigned int N = 128;
 	
 	float x0 = x;
 	for(unsigned int i = 0; i < N; ++i)

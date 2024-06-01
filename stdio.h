@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdarg.h>
+#include <math.h>
 
 #define STDOUT_FILENO 1
 #define STDIN_FILENO 0
@@ -62,6 +63,15 @@ void print_decimal(int d)
 	print(&buf[sizeof(buf) - i - 1]);
 }
 
+void print_float(float f)
+{
+	int integral;
+	float fractional = modf(f, &integral);
+	print_decimal(integral);
+	putchar('.');
+	print_decimal(fractional * 100.f);
+}
+
 void print_bits(int d, int little_endian)
 {
     char buf[33];
@@ -82,35 +92,47 @@ int printf(const char *fmt, ...)
     int l = strlen(fmt);
     for(int i = 0; i < l; ++i)
 	{
-        if(fmt[i] == '%')
+		if(fmt[i] == '%')
 		{
 			int ch = fmt[i + 1];
-			if(ch == 'd')
+			switch(ch)
 			{
-				int argd = va_arg( q, int );
-				print_decimal( argd );
-			}
-            //TODO: add elseif and switch statement
-            if(ch == 's')
-			{
-                const char *args = va_arg(q, int); //TODO: fix preprocessor handle const char*
-                print(args);
-			}
-
-            if(ch == 'x')
-			{
-				int argx = va_arg( q, int );
-                print_hex(argx);
-			}
-			if ( ch == 'b' )
-			{
-				int argb = va_arg( q, int );
-				print_bits( argb , 1);
-			}
-			if ( ch == 'B' )
-			{
-				int argb = va_arg( q, int );
-				print_bits( argb , 0);
+				case 'd':
+				{
+					int argd = va_arg(q, int);
+					print_decimal(argd);
+				}
+				break;
+				case 's':
+				{
+					const char *args = va_arg(q, const char *);
+					print(args);
+				}
+				break;
+				case 'x':
+				{
+					int argx = va_arg(q, int);
+					print_hex(argx);
+				}
+				break;
+				case 'b':
+				{
+					int argb = va_arg(q, int);
+					print_bits(argb, 1);
+				}
+				break;
+				case 'B':
+				{
+					int argb = va_arg(q, int);
+					print_bits(argb, 0);
+				}
+				break;
+				case 'f':
+				{
+					float argf = (float)va_arg(q, double);
+					print_float(argf);
+				}
+				break;
 			}
 			++i;
 		}
