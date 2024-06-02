@@ -2,15 +2,17 @@
 #define STDLIB_H
 
 #include <sys/syscall.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include <stddef.h>
 
+#ifdef USE_AMD64_INLINE_ASM
 asm("exit:\n\
 			 mov $0x3c,%rax\n\
 			 syscall\n\
 			 ret\n\
 			 ");
-
+#endif
 
 __attribute__((__cdecl__,noreturn)) void exit(int status);
 
@@ -49,12 +51,27 @@ int atoi(const char *_str)
 	return total;
 }
 
+#ifdef USE_AMD64_INLINE_ASM
+__attribute__((__cdecl__)) int brk(void *addr);
+asm("brk:\n\
+			 mov $0xc,%rax\n\
+			 syscall\n\
+			 ret\n\
+			 ");
+#else
+__attribute__((__cdecl__)) void* sbrk(intptr_t);
+#endif
+
 void *malloc(int size)
 {
-    int current = brk(0);
-    int next = brk(current + size);
-    //printf("current=%x,next=%x\n",current,next);
-    return current == next ? NULL : current;
+#ifdef USE_AMD64_INLINE_ASM
+	int current = brk(0);
+	int next = brk((void *)(current + size));
+	// printf("current=%x,next=%x\n",current,next);
+	return current == next ? (void *)NULL : (void *)current;
+#else
+	return sbrk(size);
+#endif
 }
 
 void free(void *p)
