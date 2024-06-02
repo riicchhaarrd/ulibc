@@ -86,4 +86,19 @@ float sinf(float x)
 	return s;
 }
 
+float cosf(float x)
+{
+	float s = 1.f;
+	float n = 2;
+	for(size_t i = 0; i < 32; ++i)
+	{
+		if(i % 2 == 0)
+			s -= powf(x, n) / factorial(n);
+		else
+			s += powf(x, n) / factorial(n);
+		n += 2;
+	}
+	return s;
+}
+
 #endif
