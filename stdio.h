@@ -11,19 +11,19 @@
 #define STDIN_FILENO 0
 #define STDERR_FILENO 2
 
-void print(const char *s)
+static void print(const char *s)
 {
     write(STDOUT_FILENO, s, strlen(s) + 1);
 }
 
-int getchar()
+static int getchar()
 {
     char buf[1];
     read(STDIN_FILENO, buf, 1);
     return buf[0];
 }
 
-void putchar(int ch)
+static void putchar(int ch)
 {
     char buf[2];
     buf[0] = ch;
@@ -31,7 +31,7 @@ void putchar(int ch)
     print(buf);
 }
 
-void print_hex(int d)
+static void print_hex(int d)
 {
     for(int i = 0; i < 8; ++i)
 	{
@@ -40,7 +40,7 @@ void print_hex(int d)
 	}
 }
 
-void print_decimal(int d)
+static void print_decimal(int d)
 {
     int neg = d < 0;
     if(neg)
@@ -63,7 +63,7 @@ void print_decimal(int d)
 	print(&buf[sizeof(buf) - i - 1]);
 }
 
-void print_float(float f)
+static void print_float(float f)
 {
 	int integral;
 	float fractional = modf(f, &integral);
@@ -72,7 +72,7 @@ void print_float(float f)
 	print_decimal(fractional * 100.f);
 }
 
-void print_bits(int d, int little_endian)
+static void print_bits(int d, int little_endian)
 {
     char buf[33];
     for(int i = 0; i < 32; ++i)
@@ -85,7 +85,7 @@ void print_bits(int d, int little_endian)
 	//write( STDOUT_FILENO, buf, sizeof(buf) );
 }
 
-int printf(const char *fmt, ...)
+static int printf(const char *fmt, ...)
 {
     va_list q;
     va_start(q, fmt);

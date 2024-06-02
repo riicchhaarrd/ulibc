@@ -1,14 +1,14 @@
 #ifndef STRING_H
 #define STRING_H
 
-int strlen(const char *s)
+static int strlen(const char *s)
 {
     int len = 0;
     while(*s++) len++;
     return len;
 }
 
-int strcmp(const char *a, const char *b)
+static int strcmp(const char *a, const char *b)
 {
     int al = strlen(a);
     int bl = strlen(b);
@@ -22,7 +22,7 @@ int strcmp(const char *a, const char *b)
     return 0;
 }
 
-void memset(char *p, int value, int n)
+static void memset(char *p, int value, int n)
 {
     for(int i = 0; i < n; ++i)
 	{

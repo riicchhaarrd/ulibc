@@ -16,20 +16,20 @@ asm("exit:\n\
 
 __attribute__((__cdecl__,noreturn)) void exit(int status);
 
-int main(int argc, char **argv);
-void _start()
-{
-	int status = main(0, NULL);
-	/* __builtin_trap(); */
-	exit(status);
-}
+/* int main(int argc, char **argv); */
+/* void _start() */
+/* { */
+/* 	int status = main(0, NULL); */
+/* 	/\* __builtin_trap(); *\/ */
+/* 	exit(status); */
+/* } */
 
 /* void exit(int code) */
 /* { */
 /*     syscall(SYS_exit, code); */
 /* } */
 
-int atoi(const char *_str)
+static int atoi(const char *_str)
 {
     int total = 0;
     int len = 0;
@@ -62,7 +62,7 @@ asm("brk:\n\
 __attribute__((__cdecl__)) void* sbrk(intptr_t);
 #endif
 
-void *malloc(int size)
+static void *malloc(int size)
 {
 #ifdef USE_AMD64_INLINE_ASM
 	int current = brk(0);
@@ -74,7 +74,7 @@ void *malloc(int size)
 #endif
 }
 
-void free(void *p)
+static void free(void *p)
 {
     //does nothing atm
 }

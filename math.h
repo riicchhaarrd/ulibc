@@ -5,7 +5,21 @@
 #    define M_PI 3.14159265358979323846
 #endif
 
-float expf(float x)
+static float absf(float f)
+{
+	if(f < 0.f)
+		return -f;
+	return f;
+}
+
+static float modf(float x, int *integer)
+{
+	*integer = (int)x;
+	return x - (int)x;
+}
+
+#ifndef MATH_EXTERNALLY_DEFINED
+static float expf(float x)
 {
 	float result = 1.f;
 	float term = 1.f;
@@ -17,20 +31,7 @@ float expf(float x)
 	return result;
 }
 
-float absf(float f)
-{
-	if(f < 0.f)
-		return -f;
-	return f;
-}
-
-float modf(float x, int *integer)
-{
-	*integer = (int)x;
-	return x - (int)x;
-}
-
-float logf(float x)
+static float logf(float x)
 {
 	if(x <= 0.f)
 		return -1.f / 0.f;
@@ -51,14 +52,14 @@ float logf(float x)
 	return x0;
 }
 
-float powf(float base, float exp)
+static float powf(float base, float exp)
 {
 	if(base == 0)
 		return (exp == 0) ? 1.f : 0.f;
 	return expf(exp * logf(base));
 }
 
-float factorial(float x)
+static float factorial(float x)
 {
 	float total = 1.f;
 	for(size_t i = 1; i <= x; i += 2)
@@ -71,7 +72,7 @@ float factorial(float x)
 	return total;
 }
 
-float sinf(float x)
+static float sinf(float x)
 {
 	float s = x;
 	float n = 3;
@@ -86,7 +87,7 @@ float sinf(float x)
 	return s;
 }
 
-float cosf(float x)
+static float cosf(float x)
 {
 	float s = 1.f;
 	float n = 2;
@@ -100,5 +101,12 @@ float cosf(float x)
 	}
 	return s;
 }
+#else
+float expf(float);
+float logf(float x);
+float powf(float base, float exp);
+float sinf(float x);
+float cosf(float x);
+#endif
 
 #endif
