@@ -55,7 +55,7 @@ static void *memmove(void *destination, const void *source, size_t n)
 	{
 		for(size_t i = 0; i < n; ++i)
 		{
-			dst_[n - i - 1] = src_[n - i - 1];
+			dst[n - i - 1] = src[n - i - 1];
 		}
 		return dst;
 	}
