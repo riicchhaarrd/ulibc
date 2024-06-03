@@ -118,4 +118,20 @@ static void *realloc(void *ptr, size_t new_size)
 	free(ptr);
 	return p;
 }
+
+static int abs(int n)
+{
+	return n < 0 ? -n : n;
+}
+
+static long labs(long n)
+{
+	return n < 0 ? -n : n;
+}
+
+//TODO: FIXME
+static long int strtol(const char *str, char **endptr, int base)
+{
+	return 0;
+}
 #endif

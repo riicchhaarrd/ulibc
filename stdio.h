@@ -156,4 +156,55 @@ static int vsnprintf(char *s, size_t n, const char *format, va_list arg)
 {
 	return -1;
 }
+
+static size_t fread(void *buffer, size_t size, size_t count, FILE *stream)
+{
+	return 0;
+}
+
+#define SEEK_SET 0
+#define SEEK_CUR 1
+#define SEEK_END 2
+
+static int fseek(FILE *stream, long offset, int origin)
+{
+	return -1;
+}
+
+static int ferror(FILE *stream)
+{
+	return -1;
+}
+
+#define EOF (-1)
+
+static int fgetc(FILE *stream)
+{
+	return EOF;
+}
+
+static int ungetc(int ch, FILE *stream)
+{
+	return EOF;
+}
+
+static int feof(FILE *stream)
+{
+	return EOF;
+}
+
+static FILE *fopen(const char *filename, const char *mode)
+{
+	return NULL;
+}
+
+static int fclose(FILE *stream)
+{
+	return EOF;
+}
+
+static long ftell(FILE *stream)
+{
+	return -1L;
+}
 #endif

@@ -74,4 +74,18 @@ static char *strncat(char *destination, const char *source, size_t num)
 	destination[i] = 0;
 	return destination;
 }
+
+static int strncmp(const char *a, const char *b, size_t num)
+{
+	for(size_t i = 0; i < num; ++i)
+	{
+		if(!a[i] || !b[i])
+			break;
+		if(a[i] != b[i])
+		{
+			return a[i] - b[i];
+		}
+	}
+	return 0;
+}
 #endif

@@ -112,9 +112,18 @@ float tanf(float x);
 double sqrt(double x);
 double acos(double x);
 double cos(double x);
-double fmod(double x, double y);
 double pow(double x, double y);
 #endif
+
+static float ldexpf(float num, int exp)
+{
+	return num * powf(2, exp);
+}
+
+static double ldexp(double num, int exp)
+{
+	return num * pow(2, exp);
+}
 
 static double fabs(double x)
 {
@@ -126,6 +135,11 @@ static double fabs(double x)
 static double floor(double arg)
 {
 	return (int)arg;
+}
+
+static double fmod(double x, double y)
+{
+	return x - (floor(x / y) * y);
 }
 
 static double ceil(double arg)
