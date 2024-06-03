@@ -5,6 +5,10 @@
 	#define NULL ((void *)0)
 #endif
 
+#ifndef offsetof
+	#define offsetof(st, m) ((size_t)((char *)&((st *)0)->m - (char *)0))
+#endif
+
 #include <stdint.h>
 
 #if INTPTR_MAX == INT64_MAX

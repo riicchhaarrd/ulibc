@@ -2,7 +2,7 @@
 #define MATH_H
 
 #ifndef M_PI
-#    define M_PI 3.14159265358979323846
+	#define M_PI 3.14159265358979323846
 #endif
 
 static float absf(float f)
@@ -38,7 +38,7 @@ static float logf(float x)
 
 	const float eps = 1e-6;
 	const unsigned int N = 128;
-	
+
 	float x0 = x;
 	for(unsigned int i = 0; i < N; ++i)
 	{
@@ -107,6 +107,30 @@ float logf(float x);
 float powf(float base, float exp);
 float sinf(float x);
 float cosf(float x);
+float sqrtf(float x);
+float tanf(float x);
+double sqrt(double x);
+double acos(double x);
+double cos(double x);
+double fmod(double x, double y);
+double pow(double x, double y);
 #endif
+
+static double fabs(double x)
+{
+	if(x < 0.f)
+		return -x;
+	return x;
+}
+
+static double floor(double arg)
+{
+	return (int)arg;
+}
+
+static double ceil(double arg)
+{
+	return ((int)arg) + 1;
+}
 
 #endif

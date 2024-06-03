@@ -1,11 +1,9 @@
 #ifndef TIME_H
 #define TIME_H
 
-#include <sys/syscall.h>
+typedef long int __time_t;
+typedef __time_t time_t;
 
-int time(int timer)
-{
-    return syscall( SYS_time, timer );
-}
+time_t time(time_t *arg);
 
 #endif

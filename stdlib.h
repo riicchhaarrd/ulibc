@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <stddef.h>
+#include <string.h>
 
 #ifdef USE_AMD64_INLINE_ASM
 asm("exit:\n\
@@ -51,6 +52,14 @@ static int atoi(const char *_str)
 	return total;
 }
 
+// TODO: FIXME
+// Scan for integral and fractional and then just combine them
+
+static double atof(const char *str)
+{
+	return (double)atoi(str);
+}
+
 #ifdef USE_AMD64_INLINE_ASM
 __attribute__((__cdecl__)) int brk(void *addr);
 asm("brk:\n\
@@ -64,18 +73,49 @@ __attribute__((__cdecl__)) void* sbrk(intptr_t);
 
 static void *malloc(int size)
 {
+	size += sizeof(size_t);
+
+	void *p = NULL;
+	
 #ifdef USE_AMD64_INLINE_ASM
 	int current = brk(0);
 	int next = brk((void *)(current + size));
-	// printf("current=%x,next=%x\n",current,next);
-	return current == next ? (void *)NULL : (void *)current;
+	if(current != next)
+	{
+		p = current;
+	}
 #else
-	return sbrk(size);
+	p = sbrk(size);
 #endif
+	
+	*(size_t*)p = size;
+	p = (char*)p + sizeof(size_t);
+	return p;
+}
+
+static void *calloc(size_t nitems, size_t size)
+{
+	void *p = malloc(nitems * size);
+	memset(p, 0, nitems * size);
+	return p;
 }
 
 static void free(void *p)
 {
     //does nothing atm
+}
+
+static void *realloc(void *ptr, size_t new_size)
+{
+	void *p = malloc(new_size);
+	if(NULL == ptr)
+	{
+		return p;
+	}
+	size_t current_size = *(size_t*)((char*)ptr - sizeof(size_t));
+	size_t least = new_size < current_size ? new_size : current_size;
+	memcpy(p, ptr, least);
+	free(ptr);
+	return p;
 }
 #endif

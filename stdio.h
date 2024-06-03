@@ -11,6 +11,11 @@
 #define STDIN_FILENO 0
 #define STDERR_FILENO 2
 
+typedef struct
+{
+	int unused;
+} FILE;
+
 static void print(const char *s)
 {
     write(STDOUT_FILENO, s, strlen(s) + 1);
@@ -141,5 +146,14 @@ static int printf(const char *fmt, ...)
 	}
 	va_end(q);
     return 0;
+}
+
+static int snprintf(char *s, size_t n, const char *format, ...)
+{
+	return -1;
+}
+static int vsnprintf(char *s, size_t n, const char *format, va_list arg)
+{
+	return -1;
 }
 #endif
