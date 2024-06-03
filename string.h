@@ -18,30 +18,13 @@ static int strcmp(const char *a, const char *b)
     for(int i = 0; i < al; ++i)
 	{
         if(a[i] != b[i])
-            return 1;
+            return a[i] - b[i];
 	}
     return 0;
 }
 
-static void memset(void *p_, int value, size_t n)
-{
-	char *p = (char *)p_;
-	for(int i = 0; i < n; ++i)
-	{
-		p[i] = value & 0xff;
-	}
-}
-
-static void *memcpy(void *dst, const void *src, size_t n)
-{
-	char *dst_ = (char *)dst;
-	char *src_ = (char *)src;
-	for(int i = 0; i < n; ++i)
-	{
-		dst_[i] = src_[i];
-	}
-	return dst;
-}
+void *memset(void *p_, int value, size_t n);
+void *memcpy(void *dst, const void *src, size_t n);
 
 static void *memmove(void *destination, const void *source, size_t n)
 {
